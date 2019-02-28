@@ -1,11 +1,17 @@
 package com.example.jpa.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,6 +37,11 @@ public class Post extends AuditModel {
     @NotNull
     @Lob
     private String content;
+    
+    @OneToMany(cascade = CascadeType.ALL,
+    			fetch = FetchType.LAZY,
+    			mappedBy = "post")
+    private Set<Comment> comments = new HashSet<>();
     
     public Post () {}
 
@@ -64,6 +75,14 @@ public class Post extends AuditModel {
 
 	public void setContent(String content) {
 		this.content = content;
-	}	
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
 	
 }
